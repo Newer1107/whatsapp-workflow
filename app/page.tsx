@@ -1,18 +1,19 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { fmtRowTime } from "@/lib/format";
 import { queueOrder } from "@/lib/logic";
 import { usePortal } from "@/lib/use-portal";
 import Stats from "@/components/Stats";
 import ConversationList from "@/components/ConversationList";
-import ThreadDetail from "@/components/ThreadDetail";
 import EventList from "@/components/EventList";
 import AppointmentList from "@/components/AppointmentList";
 
 const ACTIVE_EVENT_STATUSES = new Set(["open", "taken", "escalated"]);
 
 export default function OverviewPage() {
+  const router = useRouter();
   const portal = usePortal();
   const {
     threads,
@@ -25,8 +26,6 @@ export default function OverviewPage() {
     lastUpdated,
     actionError,
     clearActionError,
-    selected,
-    select,
   } = portal;
 
   const queue = queueOrder(threads);
@@ -40,7 +39,7 @@ export default function OverviewPage() {
   return (
     <main className="page">
       <section aria-label="Overview">
-        <h1 className="hero-title">Operations desk</h1>
+        <h1 className="hero-title">Morning Register</h1>
         <p className="hero-sub">
           {today} · messages from parents land here, oldest unanswered first
           {lastUpdated ? ` · updated ${fmtRowTime(new Date(lastUpdated).toISOString())}` : ""}.
@@ -88,8 +87,8 @@ export default function OverviewPage() {
         </div>
         <ConversationList
           threads={queue}
-          selectedId={selected?.id ?? null}
-          onSelect={select}
+          selectedId={null}
+          onSelect={(id) => router.push(`/conversations?thread=${id}`)}
           loading={loading && !error}
           emptyTitle="No messages yet. The queue is quiet."
           emptyCopy="New parent messages will appear here, oldest unanswered first."
@@ -139,18 +138,6 @@ export default function OverviewPage() {
           />
         </section>
       </div>
-
-      {selected && (
-        <ThreadDetail
-          thread={selected}
-          onBack={() => select(null)}
-          pending={portal.busyThreads.has(selected.id)}
-          onReply={portal.reply}
-          onRoute={portal.route}
-          onCloseThread={portal.close}
-          onEscalate={portal.escalate}
-        />
-      )}
     </main>
   );
 }

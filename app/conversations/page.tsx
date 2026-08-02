@@ -2,10 +2,9 @@
 
 import { Suspense, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import type { Thread, ThreadStatus } from "@/lib/types";
+import type { ThreadStatus } from "@/lib/types";
 import { usePortal } from "@/lib/use-portal";
-import ConversationList from "@/components/ConversationList";
-import ThreadDetail from "@/components/ThreadDetail";
+import ConversationsDesk from "@/components/ConversationsDesk";
 
 const STATUS_OPTIONS: { value: ThreadStatus | "all"; label: string }[] = [
   { value: "all", label: "All" },
@@ -49,7 +48,7 @@ function ConversationsPageInner() {
       <section aria-label="Conversations">
         <h1 className="hero-title">Conversations</h1>
         <p className="hero-sub">
-          Live WhatsApp threads with parents, newest first
+          Live WhatsApp threads with parents, oldest unanswered first
           {lastUpdated ? ` · updated ${new Date(lastUpdated).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" })}` : ""}.
         </p>
       </section>
@@ -96,26 +95,20 @@ function ConversationsPageInner() {
         </span>
       </div>
 
-      <ConversationList
+      <ConversationsDesk
         threads={shown}
         selectedId={selected?.id ?? null}
+        selectedThread={selected}
         onSelect={select}
         loading={loading && !error}
         emptyTitle="No conversations here yet."
         emptyCopy="Live threads with parents will appear here as they arrive."
+        busyThreads={portal.busyThreads}
+        onReply={portal.reply}
+        onRoute={portal.route}
+        onCloseThread={portal.close}
+        onEscalate={portal.escalate}
       />
-
-      {selected && (
-        <ThreadDetail
-          thread={selected}
-          onBack={() => select(null)}
-          pending={portal.busyThreads.has(selected.id)}
-          onReply={portal.reply}
-          onRoute={portal.route}
-          onCloseThread={portal.close}
-          onEscalate={portal.escalate}
-        />
-      )}
     </main>
   );
 }

@@ -167,7 +167,7 @@ async function main() {
     nextProcess = started.child;
 
     const routes = [
-      { path: "/", needle: "Operations desk" },
+      { path: "/", needle: "Morning Register" },
       { path: "/conversations", needle: "Conversations" },
       { path: "/events", needle: "Events" },
       { path: "/appointments", needle: "Appointments" },

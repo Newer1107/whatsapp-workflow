@@ -232,12 +232,17 @@ def main():
 
         SHOT_DIR.mkdir(parents=True, exist_ok=True)
         routes = [
-            ("/", "Operations desk", "Ritu Sharma"),
+            ("/", "Morning Register", "Ritu Sharma"),
             ("/conversations", "Conversations", "Ritu Sharma"),
             ("/events", "Events", "Aisha home sick"),
             ("/appointments", "Appointments", "Admissions tour"),
         ]
-        viewports = [("desktop", 1280, 900), ("mobile", 375, 720)]
+        viewports = [
+            ("desktop", 1440, 900),
+            ("tablet-wide", 1024, 768),
+            ("tablet", 768, 900),
+            ("mobile", 390, 844),
+        ]
 
         with sync_playwright() as p:
             for label, width, height in viewports:
@@ -254,15 +259,14 @@ def main():
                     has_needle = needle in body_text
                     has_data = hydrated in body_text
                     overflow = page.evaluate("document.documentElement.scrollWidth > window.innerWidth")
-                    # thread row selects and opens the drawer; opening is client-side only
-                    if width >= 1000 and path == "/":
+                    # Desk interaction: clicking a queue row opens the thread pane/sheet.
+                    if path == "/conversations":
                         row = page.query_selector(".thread-row")
                         if row:
                             row.click()
                             page.wait_for_timeout(400)
-                            drawer = page.query_selector(".thread-drawer")
-                            if drawer is None:
-                                FAILURES.append(f"[{label}] thread drawer did not open on /")
+                            if page.query_selector(".desk.has-thread .thread-pane") is None:
+                                FAILURES.append(f"[{label}] desk thread pane did not open on /conversations")
 
                     page.screenshot(path=str(SHOT_DIR / f"{label}-{path.strip('/') or 'home'}.png"))
                     browser.close()

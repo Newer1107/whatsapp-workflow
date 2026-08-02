@@ -1,0 +1,28 @@
+{
+  "name": "School Office Customer Demo",
+  "purpose": "Safe parent and visitor demonstration. Returns simulated JSON and has no credentials or side effects.",
+  "workflowId": "pEx4LoXFx31HW1aS",
+  "endpoint": "POST https://n8n.raunaktech.site/webhook/22d2d497-619b-47d8-ac4e-71047d537929/school-office-demo/conversation",
+  "requestExamples": {
+    "parent": {
+      "persona": "parent",
+      "message": "My child is absent today"
+    },
+    "visitor": {
+      "persona": "visitor",
+      "message": "I want to learn about admissions"
+    }
+  },
+  "responseContract": {
+    "ok": true,
+    "persona": "parent",
+    "receivedMessage": "My child is absent today",
+    "reply": "The office can record this request and route it to the right team.",
+    "nextStep": "Open the conversations or events view to demonstrate the office handoff."
+  },
+  "safety": {
+    "credentials": false,
+    "writesSchoolData": false,
+    "sendsWhatsApp": false
+  }
+}

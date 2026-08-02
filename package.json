@@ -1,0 +1,28 @@
+{
+  "name": "whatsapp-workflow",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Standalone operations portal for the school WhatsApp office. Next.js 15 app; reads the live desk from the n8n read webhook and posts office actions to the n8n action webhook, both env-driven.",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "typecheck": "tsc --noEmit",
+    "test": "node --import tsx --test \"tests/**/*.test.ts\"",
+    "test:e2e": "node scripts/e2e-smoke.mjs",
+    "demo:parent": "node scripts/demo-request.mjs parent",
+    "demo:visitor": "node scripts/demo-request.mjs visitor"
+  },
+  "dependencies": {
+    "next": "^15.3.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.14.0",
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.8.3"
+  }
+}

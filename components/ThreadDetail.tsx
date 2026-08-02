@@ -8,6 +8,7 @@ interface ThreadDetailProps {
   thread: Thread;
   onBack: () => void;
   pending?: boolean;
+  embedded?: boolean;
   onReply: (threadId: string, body: string) => void;
   onRoute: (threadId: string, target: RouteTarget) => void;
   onCloseThread: (threadId: string) => void;
@@ -43,6 +44,7 @@ export default function ThreadDetail({
   thread,
   onBack,
   pending = false,
+  embedded = false,
   onReply,
   onRoute,
   onCloseThread,
@@ -106,11 +108,11 @@ export default function ThreadDetail({
 
   return (
     <>
-      <div className="drawer-scrim" onClick={onBack} aria-hidden="true" />
+      {!embedded && <div className="drawer-scrim" onClick={onBack} aria-hidden="true" />}
       <section
-        className="thread-drawer"
-        role="dialog"
-        aria-modal="true"
+        className={embedded ? "thread-pane" : "thread-drawer"}
+        role={embedded ? "region" : "dialog"}
+        aria-modal={embedded ? undefined : "true"}
         aria-label={`Conversation with ${thread.parent.name}`}
       >
         {/* Header: sender, status, actions */}

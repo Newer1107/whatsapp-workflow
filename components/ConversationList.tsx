@@ -77,12 +77,7 @@ export default function ConversationList({
               </span>
               <span className="thread-preview">{last ? last.body : ""}</span>
               <span className="thread-meta">
-                {t.status === "unread" && <span className="badge badge-open">Unread</span>}
-                {t.status === "open" && <span className="badge badge-open">Open</span>}
-                {t.status === "routed" && (
-                  <span className="badge badge-routed">Routed · {t.routeTo}</span>
-                )}
-                {t.status === "closed" && <span className="badge badge-closed">Closed</span>}
+                {t.unread > 0 && <span className="badge badge-open">Unread</span>}
                 {old && <span className="badge badge-old">old</span>}
                 <span>
                   {t.students.map((s) => s.name).join(", ")} · {t.students.map((s) => s.homeroom).join(", ")}

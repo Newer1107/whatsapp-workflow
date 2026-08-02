@@ -8,7 +8,6 @@ import { slaSummary } from "@/lib/logic";
 
 const SCHOOL_NAME = "Riverside Public School";
 const OFFICE_HOURS = "WhatsApp office · 8:00 – 16:00";
-
 const NAV_LINKS = [
   { href: "/", label: "Overview", match: (p: string) => p === "/" },
   { href: "/conversations", label: "Conversations", match: (p: string) => p.startsWith("/conversations") },
@@ -17,16 +16,7 @@ const NAV_LINKS = [
 ] as const;
 
 function Emblem() {
-  return (
-    <span className="emblem" aria-hidden="true">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M12 6.5C10 5 7 4.8 4.5 5.5v12.6c2.5-.7 5.5-.5 7.5 1 2-1.5 5-1.7 7.5-1V5.5C17 4.8 14 5 12 6.5Z" />
-        <path d="M12 6.5v12.6" />
-        <path d="M9.4 8.6c-1.2-.5-2.6-.6-3.9-.3" />
-        <path d="M14.6 8.6c1.2-.5 2.6-.6 3.9-.3" />
-      </svg>
-    </span>
-  );
+  return <span className="emblem">RS</span>;
 }
 
 function clockNow(): string {
@@ -62,8 +52,8 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         <div className="masthead-inner">
           <Emblem />
           <div className="brand">
-            <div className="brand-name">{SCHOOL_NAME}</div>
-            <div className="brand-sub">{OFFICE_HOURS}</div>
+            <div className="brand-name">Morning Register</div>
+            <div className="brand-sub">{SCHOOL_NAME}</div>
           </div>
           <nav className="nav" aria-label="Portal sections">
             {NAV_LINKS.map((link) => (
@@ -84,6 +74,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
               <span className="live-dot" aria-hidden="true" />
               {offline ? "Offline" : "Live"}
             </span>
+            <span className="office-hours">{OFFICE_HOURS}</span>
             <span className={`sla-note${unanswered ? " sla-warn" : ""}`}>
               {sla || "Loading queue…"}
             </span>

@@ -97,6 +97,105 @@ curl -X POST "https://n8n.raunaktech.site/webhook/22d2d497-619b-47d8-ac4e-71047d
   -d '{"persona":"parent","message":"My child is absent today"}'
 ```
 
+## Sales conversation scripts
+
+These are the best live prompts to use when showing a school owner what the
+system replaces: repeated phone calls, untracked WhatsApp messages, and manual
+handoffs between admissions and the front desk.
+
+### Script A: admissions enquiry to booked meeting
+
+Send or say:
+
+```text
+I am moving my child to your school next term. What documents and fees should I prepare?
+```
+
+Then follow up:
+
+```text
+Please book an admissions meeting for 10 August at 4pm. Student: Aarav Mehta. Parent: Neha Mehta.
+```
+
+Open `/conversations` to show the context and `/appointments` to show the
+office record. The selling point is the complete journey from question to
+qualified admissions follow-up.
+
+### Script B: one parent, two office teams
+
+```text
+My daughter is absent today and I also need to ask about the school bus for tomorrow.
+```
+
+Then:
+
+```text
+Please send the bus question to the transport office and keep the absence noted for the front desk.
+```
+
+Open `/events` and `/conversations`. Explain that staff see actionable work,
+not just a long chat transcript.
+
+### Script C: sensitive escalation with a private follow-up
+
+```text
+I need to report a serious concern about a teacher. I do not want to repeat the details to several people.
+```
+
+Then:
+
+```text
+The teacher is Mr Sharma, my child is Rishit Singh, and it happened today. Please mark this urgent and ask the principal's office to follow up privately.
+```
+
+Show the priority event and its source conversation. This demonstrates careful
+handoff, not an AI pretending to investigate. For a real safeguarding case,
+always follow the school's official safeguarding process as well.
+
+### Script D: complex office-day request
+
+```text
+I have three things: tell me the Grade 5 admission documents, note that my son will be absent tomorrow, and help me book a meeting with admissions next Tuesday afternoon.
+```
+
+When asked for details:
+
+```text
+Student: Kabir Mehta. Parent: Poonam Mehta. Book the meeting for 3pm if available.
+```
+
+Show the conversation, event/request, and appointment views in that order. This
+is the strongest demonstration of replacing several separate office calls.
+
+### Script E: safe clarification
+
+```text
+Book an appointment for tomorrow morning.
+```
+
+Wait for the agent to ask for the purpose and names, then provide them. This
+shows the system gathers missing details instead of inventing a booking.
+
+For resilience, also try:
+
+```text
+Book an appointment for yesterday at 3pm.
+```
+
+The production-safe behavior is to ask for a corrected future slot. Never use
+an invalid or past booking as a successful customer demonstration.
+
+## What to say while demonstrating
+
+- “The agent answers the routine question immediately.”
+- “It remembers the parent and student when the booking details arrive.”
+- “The office gets a record that can be confirmed, routed, or followed up.”
+- “The conversation is still visible, so staff do not lose context.”
+- “For sensitive or uncertain cases, it hands off instead of pretending.”
+
+Do not promise exact fees, appointment availability, or safeguarding outcomes
+unless those facts are connected to the school's approved source of truth.
+
 Visitor example:
 
 ```bash
@@ -110,8 +209,8 @@ Expected response shape:
 ```json
 {
   "ok": true,
-  "persona": "parent",
-  "receivedMessage": "My child is absent today",
+  "persona": "visitor",
+  "receivedMessage": "I want to learn about admissions",
   "reply": "...",
   "nextStep": "..."
 }

@@ -46,10 +46,132 @@ school records.
 
 Live demo workflow: `School Office Customer Demo` (`pEx4LoXFx31HW1aS`).
 
+## WhatsApp prompt bank for customer demos
+
+Use these as spoken or typed WhatsApp messages. Start with one short prompt,
+let the agent answer, then continue with the follow-up. The strongest demo is
+not a long scripted paragraph — it is showing that the agent remembers context,
+asks for missing details, creates a useful office record, and keeps staff work
+visible in the portal.
+
+### High-value everyday prompts
+
+| Say this to the agent | Show the customer |
+|---|---|
+| “What documents do I need for admission to Grade 3?” | A parent gets an immediate, plain-language admissions answer. |
+| “What are the school timings, office hours, and after-school care timings?” | One place for routine questions that otherwise interrupt the office. |
+| “Can you explain the fees for Nursery and what is paid once versus yearly?” | Consistent fee guidance with a clear handoff when exact figures need confirmation. |
+| “My child will be absent today. Please let the school office know.” | The message becomes visible to staff as an operational request. |
+| “I need to speak to the admissions office about joining next term.” | A natural conversation becomes a traceable office follow-up. |
+| “Can I book an appointment about admission queries?” | The agent asks for the purpose, preferred slot, and parent/student details. |
+| “3rd August 2026 at 3pm. Student: Rishit Singh. Parent: Poonam Singh.” | The follow-up completes the appointment record; open `/appointments` to show it. |
+| “I need to change the pickup arrangement for my child today.” | A time-sensitive parent request is routed to the office queue. |
+
+### Stronger multi-turn demos
+
+1. **Admissions conversion**
+
+   ```text
+   I am moving my child to your school next term. What documents and fees should I prepare?
+   ```
+
+   Follow with:
+
+   ```text
+   Please book an admissions meeting for 10 August at 4pm. Student: Aarav Mehta. Parent: Neha Mehta.
+   ```
+
+   Show the answer first, then `/appointments` and the linked conversation in
+   `/conversations`. This demonstrates information, intent capture, and office
+   handoff in one journey.
+
+2. **Parent support triage**
+
+   ```text
+   My daughter is absent today and I also need to ask about the school bus for tomorrow.
+   ```
+
+   Follow with:
+
+   ```text
+   Please send the bus question to the transport office and keep the absence noted for the front desk.
+   ```
+
+   Show `/conversations` and `/events` to demonstrate that one parent message
+   can produce separate, actionable office work instead of disappearing in a
+   chat history.
+
+3. **Principal escalation with context**
+
+   ```text
+   I need to report a serious concern about a teacher. I do not want to repeat the details to several people.
+   ```
+
+   Follow with:
+
+   ```text
+   The teacher is Mr Sharma, my child is Rishit Singh, and it happened today. Please mark this urgent and ask the principal's office to follow up privately.
+   ```
+
+   Show the priority event and the original conversation together. For a real
+   incident, never use the demo environment as the only reporting channel;
+   confirm the school's safeguarding procedure as well.
+
+4. **Complex office-day request**
+
+   ```text
+   I have three things: tell me the Grade 5 admission documents, note that my son will be absent tomorrow, and help me book a meeting with admissions next Tuesday afternoon.
+   ```
+
+   When the agent asks for details, reply:
+
+   ```text
+   Student: Kabir Mehta. Parent: Poonam Mehta. Book the meeting for 3pm if available.
+   ```
+
+   Show the conversation, event/request, and appointment views in sequence.
+   This is the best “replace several phone calls” demonstration.
+
+### Clarification and resilience prompts
+
+These are useful when a prospect asks whether the system behaves safely:
+
+```text
+Book an appointment for tomorrow morning.
+```
+
+Then provide the parent and student names only after the agent asks. This shows
+that the agent can gather missing fields instead of inventing them.
+
+```text
+Book an appointment for yesterday at 3pm.
+```
+
+Use this to demonstrate that a production setup should ask for a corrected
+future slot rather than silently creating a past booking.
+
+```text
+My child is being bullied and I need the school to call me privately.
+```
+
+Use this to demonstrate sensitive escalation and honest handoff language. Do
+not use fabricated names or details in a real safeguarding conversation.
+
+### Demo discipline
+
+- Use a realistic parent name and student name, then reuse them in the follow-up.
+- Give the agent one turn to ask clarifying questions; do not paste every field
+  in the first message unless demonstrating a structured booking.
+- After a successful action, show the matching portal view: conversations,
+  events, or appointments. The visible office record is the proof of value.
+- For complex prompts, explain that the demo is showing orchestration and
+  handoff; confirm exact school policy, fees, availability, and safeguarding
+  procedure before production use.
+
 - **Framework:** Next.js 15 (App Router) + React 19, plain CSS, no UI
   framework, no chart library, no auth.
 - **Design contract:** [`DESIGN.md`](./DESIGN.md) — editorial school-office
-  desk, paper/navy/crimson palette, calm borders/surface layering, 24h
+  desk, paper/ink/green palette, calm borders/surface layering, 24h
   timestamps, responsive.
 - **Routes:** `/`, `/conversations`, `/events`, `/appointments`.
 

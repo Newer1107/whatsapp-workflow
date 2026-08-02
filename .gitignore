@@ -24,3 +24,8 @@ next-env.d.ts
 # local env files
 .env
 .env*.local
+.env.production
+.env.production.local
+
+# server runtime
+.next-server.log

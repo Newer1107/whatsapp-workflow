@@ -5,6 +5,7 @@ import { fmtClock } from "../lib/format.ts";
 import {
   derivedBusiestHour,
   pulseStateFor,
+  parseAppointmentSlot,
   queueOrder,
   slaSummary,
   splitByTime,
@@ -55,6 +56,20 @@ test("splitByTime separates upcoming (soonest first) from past (latest first)", 
   const { upcoming, past } = splitByTime([pastOld, upcomingLater, pastNew, upcomingSoon, boundary]);
   assert.deepEqual(upcoming.map((a) => a.id), ["a5", "a4", "a3"]);
   assert.deepEqual(past.map((a) => a.id), ["a2", "a1"]);
+});
+
+test("parseAppointmentSlot keeps ordinal WhatsApp dates as upcoming local times", () => {
+  const now = new Date(2026, 7, 2, 12, 0, 0, 0);
+  const parsed = parseAppointmentSlot("3rd August 2026 at 3pm", now);
+
+  assert.equal(parsed, new Date(2026, 7, 3, 15, 0, 0, 0).toISOString());
+});
+
+test("parseAppointmentSlot infers the next occurrence for a date without a year or time", () => {
+  const now = new Date(2026, 7, 2, 12, 0, 0, 0);
+  const parsed = parseAppointmentSlot("10 August", now);
+
+  assert.equal(parsed, new Date(2026, 7, 10, 9, 0, 0, 0).toISOString());
 });
 
 test("derivedBusiestHour counts today's inbound messages per hour", () => {

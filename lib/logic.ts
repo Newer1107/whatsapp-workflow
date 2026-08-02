@@ -44,6 +44,42 @@ export function pulseStateFor(
   return "live";
 }
 
+const MONTHS = new Map([
+  ["january", 0], ["february", 1], ["march", 2], ["april", 3],
+  ["may", 4], ["june", 5], ["july", 6], ["august", 7],
+  ["september", 8], ["october", 9], ["november", 10], ["december", 11],
+]);
+
+export function parseAppointmentSlot(value: string | undefined, now = new Date()): string | null {
+  const text = value?.trim();
+  if (!text) return null;
+
+  const iso = new Date(text);
+  if (!Number.isNaN(iso.getTime()) && /^\d{4}-\d{2}-\d{2}/.test(text)) return iso.toISOString();
+
+  const match = text.match(
+    /^(\d{1,2})(?:st|nd|rd|th)?\s+([a-z]+)(?:\s+(\d{4}))?(?:\s+(?:at\s+)?(\d{1,2})(?::(\d{2}))?\s*(am|pm)?)?$/i,
+  );
+  if (!match) return null;
+
+  const [, dayText, monthText, yearText, hourText, minuteText, meridiem] = match;
+  const month = MONTHS.get(monthText.toLowerCase());
+  if (month === undefined) return null;
+
+  const hour = hourText ? Number(hourText) : 9;
+  const minute = minuteText ? Number(minuteText) : 0;
+  if (hour > 23 || minute > 59 || (meridiem && hour > 12)) return null;
+
+  const localHour = meridiem
+    ? (hour % 12) + (meridiem.toLowerCase() === "pm" ? 12 : 0)
+    : hour;
+  const year = yearText ? Number(yearText) : now.getFullYear();
+  const candidate = new Date(year, month, Number(dayText), localHour, minute, 0, 0);
+  if (Number.isNaN(candidate.getTime()) || candidate.getMonth() !== month || candidate.getDate() !== Number(dayText)) return null;
+  if (!yearText && candidate.getTime() < now.getTime()) candidate.setFullYear(year + 1);
+  return candidate.toISOString();
+}
+
 /** Split appointments into upcoming (soonest first) and past (latest first). */
 export function splitByTime(appointments: Appointment[]): {
   upcoming: Appointment[];

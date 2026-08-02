@@ -1,0 +1,86 @@
+/* ==========================================================================
+   DESIGN TOKENS — WhatsApp School Operations Portal
+   --------------------------------------------------------------------------
+   Architecture follows DESIGN.md (section 7: one :root block, 4px spacing,
+   borders-only depth, system fonts). The palette is the school identity from
+   the reference screenshots: white surfaces, royal blue #245487 as the brand,
+   deep academic red as the accent. WhatsApp green is a signal, not a theme —
+   it appears only where something is live or where the primary action lives.
+
+   Green  → liveness (live dot, pulse rail live/typing/incoming) + Send
+   Blue   → school identity (headings, emblem, nav, links, outbound bubbles)
+   Red    → academic emphasis + attention (unread backlog, section markers)
+   ========================================================================== */
+
+:root {
+  /* color — surface */
+  --paper: #f4f6f9;          /* page base, cool light */
+  --paper-raised: #ffffff;   /* cards, panes, header */
+  --paper-inset: #edf0f4;    /* inputs, selected rows, hover fill */
+  --ink: #23272e;            /* primary text, near-black */
+  --ink-2: #57606b;          /* secondary text */
+  --ink-3: #87919d;          /* muted text: timestamps, helper copy */
+  --ink-faint: #b4bcc6;      /* placeholder, disabled text */
+  --line: #dde3ea;           /* standard hairline */
+  --line-soft: #e9edf2;      /* softer separators (list dividers) */
+  --line-strong: #b7c1cd;    /* emphatic border: hover rows, focus */
+
+  /* color — school identity */
+  --blue: #245487;           /* royal blue, primary brand */
+  --blue-strong: #1b3f63;    /* hover/pressed, focus */
+  --blue-soft: #e7edf4;      /* tint behind blue text, selected rows */
+  --crimson: #a51c30;        /* deep academic red, accent + unread */
+  --crimson-strong: #7e1423; /* pressed red, emphasis text */
+  --crimson-soft: #f6e9eb;   /* tint behind red text */
+
+  /* color — signal */
+  --green: #00a884;          /* liveness + primary action only */
+  --green-strong: #00876c;   /* primary action hover/pressed */
+  --green-soft: #e2f3ee;     /* tint behind live text */
+  --moss: #4e7a4e;           /* semantic success, stays quiet */
+  --ochre: #b07e2a;          /* semantic warning (stale / about to time out) */
+  --brick: #b3502f;          /* semantic error strip */
+  --shadow-tint: #1b2430;    /* only for shadows, never resting surfaces */
+
+  /* type */
+  --font-serif: Georgia, "Times New Roman", ui-serif, serif;
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "Cascadia Mono", Consolas, monospace;
+
+  /* spacing: 4px base */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 20px;
+  --sp-6: 24px;
+  --sp-8: 32px;
+  --sp-10: 40px;
+  --sp-12: 48px;
+
+  /* radius */
+  --r-sm: 4px;
+  --r-md: 10px;
+  --r-lg: 14px;
+  --r-full: 999px;
+
+  /* layout */
+  --pane-list: 380px;       /* conversation list width */
+  --content-max: 720px;     /* message text column */
+  --page-max: 1280px;
+
+  /* motion */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-fast: 120ms;
+  --dur-base: 200ms;
+  --dur-ping: 600ms;
+
+  /* borders */
+  --border-standard: 1px solid var(--line);
+  --border-soft: 1px solid var(--line-soft);
+  --border-strong: 1px solid var(--line-strong);
+
+  /* restrained shadows — resting cards get one soft lift only */
+  --shadow-card: 0 1px 2px rgba(27, 36, 48, 0.05), 0 2px 10px rgba(27, 36, 48, 0.06);
+  --shadow-overlay: 0 4px 24px rgba(27, 36, 48, 0.12);
+}

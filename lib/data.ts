@@ -6,6 +6,7 @@ import type {
   StaffEvent,
   Thread,
 } from "./types";
+import { parseAppointmentSlot } from "./logic";
 
 /**
  * Data adapter for the live n8n webhook endpoints. The read endpoint returns
@@ -40,7 +41,7 @@ export interface RawAppointment {
   studentName?: string;
   requestedSlot?: string;
   reason?: string;
-  status: Appointment["status"];
+  status: Appointment["status"] | "proposed";
   notes?: string;
   createdAt: string;
 }
@@ -63,6 +64,10 @@ const EMPTY_METRICS: PortalStats["metrics"] = {
   slaOldestMinutes: null,
 };
 
+function normalizeAppointmentStatus(status: RawAppointment["status"]): Appointment["status"] {
+  return status === "proposed" ? "requested" : status;
+}
+
 /** Translate the raw wire shape into the UI domain model. Pure. */
 export function mapRawPayload(raw: RawPortalPayload): PortalPayload {
   return {
@@ -80,7 +85,7 @@ export function mapRawPayload(raw: RawPortalPayload): PortalPayload {
     appointments: (raw.appointments ?? []).map((appointment) => ({
       id: appointment.appointmentId,
       title: appointment.reason || "Appointment request",
-      status: appointment.status,
+      status: normalizeAppointmentStatus(appointment.status),
       parent: {
         id: appointment.conversationKey || appointment.appointmentId,
         name: appointment.parentName || "Parent",
@@ -90,7 +95,7 @@ export function mapRawPayload(raw: RawPortalPayload): PortalPayload {
       student: appointment.studentName
         ? { id: appointment.studentName, name: appointment.studentName, homeroom: "", cohort: "" }
         : undefined,
-      startsAt: appointment.requestedSlot || appointment.createdAt,
+      startsAt: parseAppointmentSlot(appointment.requestedSlot) ?? appointment.createdAt,
       note: appointment.notes || undefined,
     })),
     stats: raw.stats
@@ -159,15 +164,15 @@ export function cancelEventPayload(eventId: string): Record<string, string> {
 }
 
 export function confirmAppointmentPayload(appointmentId: string): Record<string, string> {
-  return { action: "appointment_confirm", appointmentId };
+  return { action: "appointment_confirm", appointmentId, status: "confirmed" };
 }
 
 export function declineAppointmentPayload(appointmentId: string): Record<string, string> {
-  return { action: "appointment_decline", appointmentId };
+  return { action: "appointment_decline", appointmentId, status: "declined" };
 }
 
 export function completeAppointmentPayload(appointmentId: string): Record<string, string> {
-  return { action: "appointment_complete", appointmentId };
+  return { action: "appointment_complete", appointmentId, status: "completed" };
 }
 
 async function action(body: Record<string, string>): Promise<void> {

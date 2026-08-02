@@ -85,6 +85,25 @@ test("mapRawPayload maps appointments with all fallbacks", () => {
   assert.equal(second.startsAt, "2024-05-06T09:00:00.000Z"); // falls back to createdAt
 });
 
+test("mapRawPayload normalizes live proposed appointments and human date strings", () => {
+  const out = mapRawPayload({
+    appointments: [
+      {
+        appointmentId: "apt-live",
+        parentName: "Poonam Singh",
+        studentName: "Rishit Singh",
+        requestedSlot: "3rd August 2026 at 3pm",
+        reason: "Admission queries",
+        status: "proposed",
+        createdAt: "2026-08-02T12:44:44.440Z",
+      },
+    ],
+  });
+
+  assert.equal(out.appointments[0].status, "requested");
+  assert.match(out.appointments[0].startsAt, /^2026-08-03T/);
+});
+
 test("mapRawPayload defaults missing sections without crashing", () => {
   const out = mapRawPayload({});
   assert.deepEqual(out.threads, []);

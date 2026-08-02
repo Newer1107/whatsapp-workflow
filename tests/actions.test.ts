@@ -38,7 +38,7 @@ test("event payload contracts", () => {
 });
 
 test("appointment payload contracts", () => {
-  assert.deepEqual(confirmAppointmentPayload("ap-1"), { action: "appointment_confirm", appointmentId: "ap-1" });
-  assert.deepEqual(declineAppointmentPayload("ap-1"), { action: "appointment_decline", appointmentId: "ap-1" });
-  assert.deepEqual(completeAppointmentPayload("ap-1"), { action: "appointment_complete", appointmentId: "ap-1" });
+  assert.deepEqual(confirmAppointmentPayload("ap-1"), { action: "appointment_confirm", appointmentId: "ap-1", status: "confirmed" });
+  assert.deepEqual(declineAppointmentPayload("ap-1"), { action: "appointment_decline", appointmentId: "ap-1", status: "declined" });
+  assert.deepEqual(completeAppointmentPayload("ap-1"), { action: "appointment_complete", appointmentId: "ap-1", status: "completed" });
 });

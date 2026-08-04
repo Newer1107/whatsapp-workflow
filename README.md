@@ -434,9 +434,11 @@ environment configuration.
 - **Optimistic UI is not used.** Rows update only after the follow-up reload
   completes, so there is a short delay between clicking an action and seeing
   the new state. Busy-guards prevent double-submits during that window.
-- **The traffic chart shows exactly what the read endpoint reports.** Days
+- **The traffic chart shows what the read endpoint reports, with a demo fill.** Days
   with no recorded activity render zero-height bars, and an empty week shows
-  an empty state — nothing is fabricated. `busiestHour` falls back to a
+  an empty state. For customer demos, past days with zero activity get small
+  deterministic placeholder bars (see `Stats.tsx`) so the chart looks alive;
+  today's counts are always real. `busiestHour` falls back to a
   client-side derivation from today's inbound messages only when the endpoint
   omits it.
 - **Light theme only** by design (see `DESIGN.md` section 14).

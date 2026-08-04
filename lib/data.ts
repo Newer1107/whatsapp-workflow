@@ -20,6 +20,7 @@ import { parseAppointmentSlot } from "./logic";
 
 const READ_API_URL = process.env.NEXT_PUBLIC_WHATSAPP_PORTAL_READ_API_URL;
 const ACTION_API_URL = process.env.NEXT_PUBLIC_WHATSAPP_PORTAL_ACTION_API_URL;
+const PORTAL_TOKEN = process.env.NEXT_PUBLIC_WHATSAPP_PORTAL_TOKEN ?? "";
 
 /** Shape the read endpoint actually returns for events. */
 export interface RawEvent {
@@ -109,11 +110,15 @@ async function portalRequest<T>(baseUrl: string | undefined, init?: RequestInit)
     throw new Error("Missing WhatsApp portal API URL");
   }
 
-  const response = await fetch(baseUrl, {
-    ...init,
-    headers: { "Content-Type": "application/json", ...init?.headers },
-    signal: AbortSignal.timeout(10_000),
-  });
+const response = await fetch(baseUrl, {
+  ...init,
+  headers: {
+    "Content-Type": "application/json",
+    ...(PORTAL_TOKEN ? { "x-portal-token": PORTAL_TOKEN } : {}),
+    ...init?.headers,
+  },
+  signal: AbortSignal.timeout(10_000),
+});
 
   if (!response.ok) {
     throw new Error(`Portal API returned ${response.status}`);
